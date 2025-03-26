@@ -25,10 +25,11 @@ public class Grayscale extends Converter {
     			// add r, g, b & divide by 3
     			
     			rgb = originalImage.getRGB(x, y);
-    			r = ( (rgb >> 16 ) & 0xFF);
-    			g = ( (rgb >> 8 ) & 0xFF);
-    			b = ( rgb & 0xFF);
-    			rgb = ( (int) r + g + b)/3;
+    			
+    			ARGB col_seperate = new ARGB(rgb);
+    			
+    			col_seperate = new ARGB ( (col_seperate.red + col_seperate.blue + col_seperate.green) /3 ) ;
+    			
     			rgb = 225 << 24 | rgb << 16 | rgb << 8 | rgb; 
     			grayimage.setRGB(x, y, rgb);
     			

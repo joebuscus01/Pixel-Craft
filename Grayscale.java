@@ -2,7 +2,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
 
 
 public class Grayscale extends Converter {
@@ -10,8 +9,17 @@ public class Grayscale extends Converter {
     public void convert(String inputFileName, String outputFileName) throws IOException { //throws exception if issue with input/output
     	
     	System.out.println("Converting to Grayscale. . .");
-    	File inputFile = new File("toronto.png");
-    	System.out.println("inputFile" + inputFile);
+    	File inputFile = new File(inputFileName);
+    	System.out.println("inputFile " + inputFile.getAbsolutePath());
+    	
+    	if (!inputFile.exists()) {
+            System.out.println("Error: File does not exist!");
+            return;
+        }
+        if (!inputFile.canRead()) {
+            System.out.println("Error: File cannot be read!");
+            return;
+        }
     	BufferedImage originalImage = ImageIO.read(inputFile); //reads input
     	BufferedImage grayimage = new BufferedImage(originalImage.getWidth(),originalImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY); //blank gray image with original height & image
     	int rgb = 0, r = 0, g = 0, b = 0;
@@ -28,7 +36,7 @@ public class Grayscale extends Converter {
     			
     			ARGB col_seperate = new ARGB(rgb);
     			
-    			col_seperate = new ARGB ( (col_seperate.red + col_seperate.blue + col_seperate.green) /3 ) ;
+    			rgb =   (col_seperate.red + col_seperate.blue + col_seperate.green) /3 ;
     			
     			rgb = 225 << 24 | rgb << 16 | rgb << 8 | rgb; 
     			grayimage.setRGB(x, y, rgb);
@@ -39,32 +47,10 @@ public class Grayscale extends Converter {
     		
     	}
     	
-    	
-    	
-    	if (originalImage != null) { //DELTE AT END
-    		display(originalImage);
-    	}
-    	
-    	
-    	
     	File outputFile = new File(outputFileName);
-    	// ImageIO.write(processedImage, "PNG", outputFile); //output	
-
+    	ImageIO.write(grayimage, "PNG", outputFile); //output	
+    	//  java -cp "C:\Users\joefe\Downloads\Pixel-Craft-main\Pixel-Craft-main" PixelCraft Grayscale "C:\Users\joefe\Downloads\Pixel-Craft-main\Pixel-Craft-main\toronto.png"
     }
     
-    //displays img using Swing 
-    //DELETE WITH IMPORT IN FINAL COPY
-    public static void display(BufferedImage img) {
-    	System.out.println("Displayed Image: ");
-    	//NOT MY CODE
-    	JFrame frame = new JFrame();
-	    JLabel label = new JLabel();
-		frame.setSize(img.getWidth(), img.getHeight());
-		label.setIcon(new ImageIcon(img));
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-		// NOT MY CODE
-    }
 
 }
